@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class OrderWithItemExport implements FromView, WithTitle, WithMapping, ShouldAutoSize, WithHeadings, WithStyles
+class Order2WithItemExport implements FromView, WithTitle, WithMapping, ShouldAutoSize, WithHeadings, WithStyles
 {
     use RemembersRowNumber;
 
@@ -32,14 +32,14 @@ class OrderWithItemExport implements FromView, WithTitle, WithMapping, ShouldAut
 
     public function collection()
     {
-        $data = DB::table('orders')
+        $data = DB::table('orders2')
                 ->when(
                     !empty($this->included),
                     function ($query) {
                         $query->whereIn('code', $this->included);
                     }
                 )
-                ->join('order_items', 'order_items.order_code', '=', 'orders.code')
+                ->join('order2_items', 'order2_items.order_code', '=', 'orders2.code')
                 ->select([
                     'code',
                     'name',
@@ -52,14 +52,14 @@ class OrderWithItemExport implements FromView, WithTitle, WithMapping, ShouldAut
 
     public function view(): View
     {
-        $orders = DB::table('orders')
+        $orders = DB::table('orders2')
                 ->when(
                     !empty($this->included),
                     function ($query) {
                         $query->whereIn('code', $this->included);
                     }
                 )
-                ->join('order_items', 'order_items.order_code', '=', 'orders.code')
+                ->join('order2_items', 'order2_items.order_code', '=', 'orders2.code')
                 ->select([
                     'code',
                     'name',
@@ -104,6 +104,6 @@ class OrderWithItemExport implements FromView, WithTitle, WithMapping, ShouldAut
 
     public function title(): string
     {
-        return 'Shopee Orders';
+        return 'Tiktok Orders';
     }
 }

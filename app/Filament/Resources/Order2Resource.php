@@ -43,11 +43,13 @@ class Order2Resource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at'),
-                Tables\Columns\TextColumn::make('total_quantity'),
+                Tables\Columns\TextColumn::make('total_quantity')
+                    ->sortable(),
             ])
             ->filters([
                 //

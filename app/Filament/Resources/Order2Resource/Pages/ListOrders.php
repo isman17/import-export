@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Order2Resource\Pages;
 
 use App\Filament\Resources\Order2Resource;
-use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\Order2;
+use App\Models\Order2Item;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
@@ -34,77 +34,43 @@ class ListOrders extends ListRecords
                 ->fields([
                     ImportField::make('code')
                         ->required()
-                        ->label(trans('resource.order.code'))
-                        ->translateLabel(trans('resource.order.code')),
+                        ->label('Order ID'),
                     ImportField::make('status')
                         ->required()
-                        ->label(trans('resource.order.status'))
-                        ->translateLabel(trans('resource.order.status')),
-                    // ImportField::make('created_at')
-                    //     ->required()
-                    //     ->label(trans('resource.order.created_at'))
-                    //     ->translateLabel(trans('resource.order.created_at')),
+                        ->label('Order Status'),
                     ImportField::make('total_quantity')
                         ->required()
-                        ->label(trans('resource.order.total_quantity'))
-                        ->translateLabel(trans('resource.order.total_quantity')),
-                    ImportField::make('parent_sku')
-                        ->required()
-                        ->label(trans('resource.order.item.parent_sku'))
-                        ->translateLabel(trans('resource.order.item.parent_sku')),
+                        ->label('Quantity'),
                     ImportField::make('name')
                         ->required()
-                        ->label(trans('resource.order.item.name'))
-                        ->translateLabel(trans('resource.order.item.name')),
+                        ->label('Product Name'),
                     ImportField::make('sku')
                         ->required()
-                        ->label(trans('resource.order.item.sku'))
-                        ->translateLabel(trans('resource.order.item.sku')),
+                        ->label('Seller SKU'),
                     ImportField::make('variant_name')
                         ->required()
-                        ->label(trans('resource.order.item.variant_name'))
-                        ->translateLabel(trans('resource.order.item.variant_name')),
-                    // ImportField::make('regular_price')
-                    //     ->required()
-                    //     ->label(trans('resource.order.item.regular_price'))
-                    //     ->translateLabel(trans('resource.order.item.regular_price')),
-                    // ImportField::make('discount_price')
-                    //     ->required()
-                    //     ->label(trans('resource.order.item.discount_price'))
-                    //     ->translateLabel(trans('resource.order.item.discount_price')),
+                        ->label('Variation'),
                     ImportField::make('quantity')
                         ->required()
-                        ->label(trans('resource.order.item.quantity'))
-                        ->translateLabel(trans('resource.order.item.quantity')),
-                    // ImportField::make('total_price')
-                    //     ->required()
-                    //     ->label(trans('resource.order.item.total_price'))
-                    //     ->translateLabel(trans('resource.order.item.total_price')),
-                    // ImportField::make('total_discount')
-                    //     ->required()
-                    //     ->label(trans('resource.order.item.total_discount'))
-                    //     ->translateLabel(trans('resource.order.item.total_discount')),
+                        ->label('Quantity'),
                 ], columns:2)
                 ->handleRecordCreation(function($data){
-                    $order = Order::updateOrCreate([
+                    if(in_array($data['code'], ['Order ID', 'Platform unique order ID.', ''])) {
+                        return new Order2();
+                    }
+                    $order = Order2::updateOrCreate([
                         'code' => $data['code']
                     ], [
                         'status' => $data['status'],
-                        // 'created_at' => $data['created_at'],
                         'total_quantity' => $data['total_quantity'],
                     ]);
                     
-                    $orderItem = OrderItem::create([
+                    $orderItem = Order2Item::create([
                         'order_code' => $data['code'],
-                        'parent_sku' => $data['parent_sku'],
                         'name' => $data['name'],
                         'sku' => $data['sku'],
                         'variant_name' => $data['variant_name'],
-                        // 'regular_price' => (double)$data['regular_price'],
-                        // 'discount_price' => (double)$data['discount_price'],
                         'quantity' => $data['quantity'],
-                        // 'total_price' => (double)$data['total_price'],
-                        // 'total_discount' => (double)$data['total_discount'],
                     ]);
 
                     return $order;
@@ -120,7 +86,7 @@ class ListOrders extends ListRecords
     public function export($data)
     {
         $included = (isset($data['included'])) ? array_filter(explode(',', str($data['included'])->replace(array("\n", "\r"), ','))) : [];
-        return Excel::download(new \App\Exports\OrderWithItemExport($included), 'orders.xlsx');
+        return Excel::download(new \App\Exports\Order2WithItemExport($included), 'orders.xlsx');
     }
 
     public function resetDB()
@@ -128,8 +94,8 @@ class ListOrders extends ListRecords
         DB::beginTransaction();
 
         try {
-            OrderItem::truncate();
-            Order::truncate();
+            Order2Item::truncate();
+            Order2::truncate();
             DB::commit();
             Notification::make() 
                 ->title('Reset Database successfully')
