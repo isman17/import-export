@@ -68,7 +68,7 @@ class Order2WithItemExport implements FromView, WithTitle, WithMapping, ShouldAu
                 ])
                 ->get();
 
-        return view('export', compact('orders'));
+        return view('export2', compact('orders'));
     }
 
     public function headings(): array
