@@ -2,29 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\FilamentExport;
-use App\Filament\Actions\FilamentExportHeaderAction;
-use App\Filament\Resources\OrderItemResource\Pages;
-use App\Filament\Resources\OrderItemResource\RelationManagers;
-use App\Models\OrderItem;
+use App\Filament\Resources\Order2ItemResource\Pages;
+use App\Models\Order2Item;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class OrderItemResource extends Resource
+class Order2ItemResource extends Resource
 {
-    protected static ?string $model = OrderItem::class;
+    protected static ?string $model = Order2Item::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = "Shopee";
+    protected static ?string $navigationGroup = "Tiktok";
+
+    protected static ?string $modelLabel = "Order Item";
 
     public static function form(Form $form): Form
     {

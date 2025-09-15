@@ -2,28 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
-use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
-use App\Models\Order;
+use App\Filament\Resources\Order2Resource\Pages;
+use App\Filament\Resources\Order2Resource\RelationManagers\ItemsRelationManager;
+use App\Models\Order2;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
-class OrderResource extends Resource
+class Order2Resource extends Resource
 {
-    protected static ?string $model = Order::class;
+    protected static ?string $model = Order2::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = "Shopee";
+    protected static ?string $navigationGroup = "Tiktok";
+
+    protected static ?string $modelLabel = "Order";
 
     public static function form(Form $form): Form
     {
