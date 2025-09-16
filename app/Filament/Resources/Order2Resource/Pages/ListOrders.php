@@ -31,6 +31,25 @@ class ListOrders extends ListRecords
                 ->action('export'),
             Actions\CreateAction::make(),
             ImportAction::make()
+                ->beforeFormValidated(function () {
+                    // Set custom temp directory within allowed paths
+                    $tempDir = storage_path('app/temp');
+                    if (!file_exists($tempDir)) {
+                        mkdir($tempDir, 0755, true);
+                    }
+                    
+                    // Set environment variables for Excel processing
+                    putenv('TMPDIR=' . $tempDir);
+                    putenv('TMP=' . $tempDir);
+                    putenv('TEMP=' . $tempDir);
+                    
+                    // For PhpSpreadsheet specifically
+                    if (class_exists('\PhpOffice\PhpSpreadsheet\Settings')) {
+                        \PhpOffice\PhpSpreadsheet\Settings::setLibXmlLoaderOptions(
+                            LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NOCDATA
+                        );
+                    }
+                })
                 ->fields([
                     ImportField::make('code')
                         ->required()
