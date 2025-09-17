@@ -46,6 +46,7 @@ class OrderWithItemExport implements FromView, WithTitle, WithMapping, ShouldAut
                     'sku',
                     'quantity',
                 ])
+                ->orderBy('code', 'asc')
                 ->get();
         return $data;
     }
@@ -66,6 +67,7 @@ class OrderWithItemExport implements FromView, WithTitle, WithMapping, ShouldAut
                     'sku',
                     'quantity',
                 ])
+                ->orderBy('code', 'asc')
                 ->get();
 
         return view('export', compact('orders'));
