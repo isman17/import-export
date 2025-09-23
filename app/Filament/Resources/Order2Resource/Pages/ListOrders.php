@@ -57,7 +57,7 @@ class ListOrders extends ListRecords
                     ImportField::make('status')
                         ->required()
                         ->label('Order Status'),
-                    ImportField::make('total_quantity')
+                    ImportField::make('quantity')
                         ->required()
                         ->label('Quantity'),
                     ImportField::make('name')
@@ -69,26 +69,24 @@ class ListOrders extends ListRecords
                     ImportField::make('variant_name')
                         ->required()
                         ->label('Variation'),
-                    ImportField::make('quantity')
-                        ->required()
-                        ->label('Quantity'),
                 ], columns:2)
                 ->handleRecordCreation(function($data){
                     if(in_array($data['code'], ['Order ID', 'Platform unique order ID.', ''])) {
                         return new Order2();
                     }
+
                     $order = Order2::updateOrCreate([
                         'code' => $data['code']
                     ], [
                         'status' => $data['status'],
-                        'total_quantity' => $data['total_quantity'],
                     ]);
                     
-                    $orderItem = Order2Item::create([
+                    $orderItem = Order2Item::updateOrCreate([
                         'order_code' => $data['code'],
-                        'name' => $data['name'],
                         'sku' => $data['sku'],
                         'variant_name' => $data['variant_name'],
+                    ], [
+                        'name' => $data['name'],
                         'quantity' => $data['quantity'],
                     ]);
 

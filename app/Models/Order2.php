@@ -43,4 +43,9 @@ class Order2 extends Model
             'code'
         );
     }
+
+    public function getQuantitySumAttribute()
+    {
+        return $this->items()->sum('quantity');
+    }
 }

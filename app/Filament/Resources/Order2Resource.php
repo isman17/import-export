@@ -48,7 +48,7 @@ class Order2Resource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at'),
-                Tables\Columns\TextColumn::make('total_quantity')
+                Tables\Columns\TextColumn::make('quantity_sum')
                     ->sortable(),
             ])
             ->filters([
